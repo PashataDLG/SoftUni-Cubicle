@@ -20,7 +20,6 @@ router.post('/create', async (req, res) => {
 
         res.redirect('/');
     } catch (error) {
-        console.log(error);
         res.status(400).send(error);
     }
 });

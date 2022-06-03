@@ -6,8 +6,6 @@ const app = express();
 
 require('./config/handlebars')(app);
 
-
-
 app.use(routes);
 
 initializeDatabase()

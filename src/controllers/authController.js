@@ -15,9 +15,15 @@ router.get('/register', function (req, res) {
     res.render('register');
 });
 
-router.post('/register', function (req, res) {
-    let { username, password } = req.body;
-    authService.register(username, password, repeatPassword);
+router.post('/register', async function (req, res) {
+    let { username, password, repeatPassword } = req.body;
+    let createdUser = await authService.register(username, password, repeatPassword);
+
+   if(createdUser){
+       res.redirect('/auth/login');
+   } else {
+       res.redirect('404');
+   }
 });
 
 module.exports = router;

@@ -7,7 +7,7 @@ const cubeSchema =  new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
+        required: true,                     
         maxLength: 120,
     },
     imageUrl: {

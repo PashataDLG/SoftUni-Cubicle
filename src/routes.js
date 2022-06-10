@@ -10,7 +10,7 @@ router.use('/', homeController);
 router.use('/cube', cubeController);
 router.use('/accessory', accessoryController);
 router.use('/auth', authController);
-router.get('*', function (req, res) {
+router.use('*', function (req, res) {
     res.status(404).render('404');
 })
 

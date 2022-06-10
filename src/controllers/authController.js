@@ -6,7 +6,8 @@ router.get('/login', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
-    console.log(req.body);
+    let { username, password } = req.body;
+    console.log(username, password);
      
     res.redirect('/auth/login');
 })

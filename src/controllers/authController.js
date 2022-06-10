@@ -13,7 +13,7 @@ router.post('/login', async function (req, res) {
     if(!token){
         return res.redirect('/404');
     }
-     
+    res.cookie('user-session', token);
     res.redirect('/');
 })
 

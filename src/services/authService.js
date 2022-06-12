@@ -2,9 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt  = require('jsonwebtoken');
 
 const User = require('../models/User');
-
-const saltRounds = 10;
-const secret = 'asdkjashkjashdkjsad124124rqsdasf,./aasd';
+const { saltRounds, secret } = require('../config/constants');
 
 exports.login = async (username, password) => {
     let user = await User.findOne({ username });
@@ -21,7 +19,7 @@ exports.login = async (username, password) => {
     }
 
     let result = new Promise((resolve, reject) => {
-        jwt.sign( {_id: user._id, username: user.username }, secret, { expiresIn: '2d' }, (err, token) => {
+        jwt.sign( {_id: user._id, username: user.username }, secret, { expiresIn: '14d' }, (err, token) => {
             if(err) {
                 return reject(err);
             }

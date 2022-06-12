@@ -5,17 +5,19 @@ router.get('/login', function (req, res) {
     res.render('login');
 });
 
+const { sessionName } = require('../config/constants');
+
 router.post('/login', async function (req, res) {
     let { username, password } = req.body;
-    
+
     let token = await authService.login(username, password);
     
     if(!token){
         return res.redirect('/404');
     }
-    res.cookie('user-session', token);
+    res.cookie(sessionName, token, { httpOnly: true });
     res.redirect('/');
-})
+});
 
 router.get('/register', function (req, res) {
     res.render('register');

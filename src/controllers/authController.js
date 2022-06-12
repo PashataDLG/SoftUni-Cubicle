@@ -34,4 +34,9 @@ router.post('/register', async function (req, res) {
    }
 });
 
+router.get('/logout', async function (req, res) {
+    res.clearCookie(sessionName);
+    res.redirect('/');
+})
+
 module.exports = router;

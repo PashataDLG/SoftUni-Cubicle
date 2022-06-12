@@ -29,10 +29,11 @@ router.post('/create', isAuth, async (req, res) => {
 });
 
 router.get('/details/:id', async function (req, res) {
-
     const cube = await cubeService.getOneDetailed(req.params.id).lean();
 
-    res.render('details', { cube });
+    const isOwner = cube.owner == req.user?._id;
+
+    res.render('details', { cube, isOwner });
 });
 
 router.get('/:cubeId/edit', async function (req, res) {
@@ -57,5 +58,17 @@ router.post('/:cubeId/edit', async function (req, res) {
 
     res.redirect(`/cube/details/${modifiedCube._id}`);
 });
+
+router.get('/:cubeId/delete', async function (req, res) {
+    const cube = await cubeService.getOne(req.params.cubeId).lean();
+
+    res.render('delete', {cube});
+});
+
+router.post('/:cubeId/delete', async function (req, res) {
+    await cubeService.delete(req.params.cubeId);
+
+    res.redirect('/')
+})
 
 module.exports = router;

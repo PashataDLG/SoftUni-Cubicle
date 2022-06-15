@@ -11,13 +11,21 @@ router.get('/login', function (req, res) {
 router.post('/login', async function (req, res) {
     let { username, password } = req.body;
 
-    let token = await authService.login(username, password);
-    
-    if(!token){
-        return res.redirect('/404');
+    try {
+        let token = await authService.login(username, password);
+        
+        if(!token){
+            return res.redirect('/404');
+        }
+
+        res.cookie(sessionName, token, { httpOnly: true });
+        res.redirect('/');   
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).render('login', { error: error.message });
     }
-    res.cookie(sessionName, token, { httpOnly: true });
-    res.redirect('/');
+
 });
 
 router.get('/register', function (req, res) {

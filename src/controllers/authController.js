@@ -22,7 +22,6 @@ router.post('/login', async function (req, res) {
         res.redirect('/');   
 
     } catch (error) {
-        console.log(error)
         res.status(400).render('login', { error: error.message });
     }
 

@@ -1,11 +1,12 @@
 const router = require('express').Router();
+
+const { isEmail } = require('../utils/validators');
 const authService = require('../services/authService');
+const { sessionName } = require('../config/constants');
 
 router.get('/login', function (req, res) {
     res.render('login');
 });
-
-const { sessionName } = require('../config/constants');
 
 router.post('/login', async function (req, res) {
     let { username, password } = req.body;
@@ -23,15 +24,26 @@ router.get('/register', function (req, res) {
     res.render('register');
 });
 
-router.post('/register', async function (req, res) {
+router.post('/register', async function (req, res, next) {
     let { username, password, repeatPassword } = req.body;
-    let createdUser = await authService.register(username, password, repeatPassword);
+    if(!isEmail(username)){
+        let error = {
+            message: 'Invalid email',
+            status: 401,
+        };
 
-   if(createdUser){
-       res.redirect('/auth/login');
-   } else {
-       res.redirect('404');
-   }
+        return next(error);
+    }
+    try {
+       await authService.register(username, password, repeatPassword);
+        
+       res.redirect('/auth/login')
+    } catch (error) {
+        console.log(error.message);
+        res.status(401).render('register', {error: error.message});
+    }
+
+
 });
 
 router.get('/logout', async function (req, res) {

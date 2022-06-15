@@ -22,7 +22,7 @@ exports.login = async (username, password) => {
         jwt.sign( {_id: user._id, username: user.username }, secret, { expiresIn: '14d' }, (err, token) => {
             if(err) {
                 return reject(err);
-            }
+            }          
             resolve(token);
         });
     });
@@ -31,13 +31,15 @@ exports.login = async (username, password) => {
 };
 
 exports.register = async (username, password, repeatPassword) => {
-    if(password !== repeatPassword){
-        return false;
-    }
-    let hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    return User.create({
+    if(User.findOne({ username: username})){
+        throw new Error('This username is already taken');
+    };
+    
+    let createdUser = await User.create({
         username,
-        password: hashedPassword,
+        password,
+        repeatPassword
     });
+
+    return createdUser;
 };
